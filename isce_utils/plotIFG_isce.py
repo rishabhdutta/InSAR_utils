@@ -6,6 +6,8 @@ Created on Mon Apr 20 11:19:54 2020
 @author: duttar
 use this script to plot complex, non-complex and stack images produced by ISCE2
 Script plot_stack.py uses this
+
+Edited from David Bekaert
 """
 
 from shutil import copyfile
