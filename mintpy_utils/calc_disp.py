@@ -46,7 +46,7 @@ def SBI_Year(imd):
         doy = datenum(d3) - dn1 
         # get fractional year:
         fracyr = doy/ndays
-        out[k] = int(dstr[k][0])+ fracyr 
+        out[k] = int(dstr[k][0][0:4])+ fracyr 
 
     return out
 
@@ -90,19 +90,34 @@ ifglen = np.shape(longitude)[0]
 ifgwid = np.shape(longitude)[1]
 ts_data = np.array(ts_data)
 eq_date = '20200318'
+eq_date_frac = SBI_Year(np.array([['20200318']])).flatten()
 
+coseismic_disp = np.zeros((ifglen, ifgwid))
 for i in range(ifglen):
     for j in range(ifgwid):
-    # timeseries at pixel (i,j)
-    ts_pix_ij = ts_data[:,i,j]
+        # timeseries at pixel (i,j)
+        ts_pix_ij = ts_data[:,i,j]
     
-    # find dates before EQ and corresponding data 
-    bef_dates = datesn[np.where(dates_int<int(eq_date))]
-    ts_bef = ts_pix_ij[np.where(dates_int<int(eq_date))[0]]
+        # find dates before EQ and corresponding data 
+        bef_dates = datesn[np.where(dates_int<int(eq_date))]
+        bef_dates_frac = SBI_Year(np.transpose(np.array([bef_dates])))
+        bef_dates_frac = bef_dates_frac.flatten()
+        ts_bef = ts_pix_ij[np.where(dates_int<int(eq_date))[0]]
 
-    # fit a line and find intercept at EQ date 
+        # fit a line and find intercept at EQ date 
+        m, b = np.polyfit(bef_dates_frac, ts_bef, 1)
+        c1 = m*eq_date_frac + b
 
+        # find dates after EQ and corresponding data
+        aft_dates = datesn[np.where(dates_int>int(eq_date))]
+        aft_dates_frac = SBI_Year(np.transpose(np.array([aft_dates])))
+        aft_dates_frac = aft_dates_frac.flatten()
+        ts_aft = ts_pix_ij[np.where(dates_int>int(eq_date))[0]]
 
+        # fit a line and find intercept at EQ date
+        m, b = np.polyfit(aft_dates_frac, ts_aft, 1)
+        c2 = m*eq_date_frac +b 
 
+        coseismic_disp[i,j] = c2 - c1 
 
 
