@@ -8,6 +8,33 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import h5py
+from datetime import datetime as dt
+
+def datenum(d):
+    '''
+    Serial date number
+    used for SBI_Year
+    '''
+    return 366 + d.toordinal() + (d - dt.fromordinal(d.toordinal())).total_seconds()/(24*60*60)
+
+def SBI_Year(imd):
+    '''
+    A simple script that takes in numbers on the format '19990930'
+    and changes to a number format 1999.7590
+
+    imd - numpy (n,1) Vector with dates
+    out - numpy (n,1) Vector with dates
+    created by Rishabh Dutta
+    '''
+
+    dstr = str(imd)
+    nd = imd.shape[0]
+    out = np.zeros((nd,1))
+
+    for k in range(nd):
+        # get first day of year, minus 1/2 a day:
+                
+
 
 # work directory
 proj_dir = os.path.expanduser('/data/not_backed_up/rdtta/earthquakes/Utah2020/Sentinel/AT20/Stack/timeseries')
@@ -22,6 +49,20 @@ with h5py.File(ts_file, "r") as f:
     ts_data = list(f[a_group_key])
     a_group_key = list(f.keys())[1]
     dates = list(f[a_group_key])
+
+with h5py.File(geom_file, "r") as f:
+    # read the geometry file 
+    a_group_key = list(f.keys())[0]
+    azim_angle = list(f[a_group_key])
+    a_group_key = list(f.keys())[1]
+    height = list(f[a_group_key])
+    a_group_key = list(f.keys())[2]
+    inc_angle = list(f[a_group_key])
+    a_group_key = list(f.keys())[3]
+    latitude = list(f[a_group_key])
+    a_group_key = list(f.keys())[4]
+    longitude = list(f[a_group_key])
+
 
 
 
