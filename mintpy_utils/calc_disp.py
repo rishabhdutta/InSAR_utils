@@ -77,6 +77,31 @@ with h5py.File(geom_file, "r") as f:
     a_group_key = list(f.keys())[4]
     longitude = list(f[a_group_key])
 
+# convert dates from type 'bytes' to string 
+numdates = np.size(dates)
+datesn = np.empty([numdates, 1], dtype="<U10")
+dates_int = np.zeros((numdates,1))
+for i in range(numdates):
+    datesn[i] = dates[i].decode("utf-8")
+    dates_int[i] = int(dates[i].decode("utf-8"))
+
+# access the dates pixel wise and estimate coseismic disp. 
+ifglen = np.shape(longitude)[0]
+ifgwid = np.shape(longitude)[1]
+ts_data = np.array(ts_data)
+eq_date = '20200318'
+
+for i in range(ifglen):
+    for j in range(ifgwid):
+    # timeseries at pixel (i,j)
+    ts_pix_ij = ts_data[:,i,j]
+    
+    # find dates before EQ and corresponding data 
+    bef_dates = datesn[np.where(dates_int<int(eq_date))]
+    ts_bef = ts_pix_ij[np.where(dates_int<int(eq_date))[0]]
+
+    # fit a line and find intercept at EQ date 
+
 
 
 
