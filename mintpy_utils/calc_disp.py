@@ -98,7 +98,11 @@ for i in range(ifglen):
     for j in range(ifgwid):
         # timeseries at pixel (i,j)
         ts_pix_ij = ts_data[:,i,j]
-    
+        
+        if np.size(np.where(np.isnan(ts_pix_ij)==True)) == numdates :
+            coseismic_disp[i,j] = np.nan
+            continue
+
         # find dates before EQ and corresponding data 
         bef_dates = datesn[np.where(dates_int<int(eq_date))]
         bef_dates_frac = SBI_Year(np.transpose(np.array([bef_dates])))
