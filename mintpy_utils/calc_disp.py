@@ -54,7 +54,7 @@ def SBI_Year(imd):
     return out
 
 # work directory
-proj_dir = os.path.expanduser('/data/not_backed_up/rdtta/earthquakes/Utah2020/Sentinel/AT20/Stack/timeseries')
+proj_dir = os.path.expanduser('/data/not_backed_up/rdtta/earthquakes/Utah2020/Sentinel/AT20/Stack/timeseries1')
 
 # file in geo coordinates
 geom_file = os.path.join(proj_dir, 'geo/geo_geometryRadar.h5')
@@ -114,7 +114,7 @@ def cos_slip(arg_j, arg_i):
         
     if np.size(np.where(np.isnan(ts_pix_ij)==True)) == numdates :
         output = np.nan  
-    elif:
+    else:
         # data before EQ 
         ts_bef = ts_pix_ij[np.where(dates_int<int(eq_date))[0]]
 
@@ -139,5 +139,13 @@ for i in range(ifglen):
     cos_slip_ = partial(cos_slip, arg_i = i)
     output = Parallel(n_jobs=num_cores)(delayed(cos_slip_)(j) for j in input)
     coseismic_disp[i,:] = np.array(output)
+
+fig = plt.figure(figsize=(18, 16))
+ax = fig.add_subplot(111)
+im = ax.pcolormesh(longitude, latitude, coseismic_disp, cmap='jet')
+fig.colorbar(im, ax=ax)
+ax.set_title('AT20 coseismic disp.')
+fig.tight_layout()
+plt.savefig('AT20_coseismic_timeseries.png')
 
 
