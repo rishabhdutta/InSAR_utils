@@ -11,6 +11,7 @@ import h5py
 from datetime import datetime as dt
 import multiprocessing
 from joblib import Parallel, delayed
+from functools import partial
 
 def datenum(d):
     '''
@@ -104,7 +105,7 @@ aft_dates = datesn[np.where(dates_int>int(eq_date))]
 aft_dates_frac = SBI_Year(np.transpose(np.array([aft_dates])))
 aft_dates_frac = aft_dates_frac.flatten()
 
-def cos_slip(arg_i, arg_j):
+def cos_slip(arg_j, arg_i):
     '''
     using multiprocessing and joblib for parallelization 
     '''
@@ -137,4 +138,6 @@ for i in range(ifglen):
     #foo_ = partial(foo, arg2=arg2, arg3=arg3, arg4=arg4)
     cos_slip_ = partial(cos_slip, arg_i = i)
     output = Parallel(n_jobs=num_cores)(delayed(cos_slip_)(j) for j in input)
+    coseismic_disp[i,:] = np.array(output)
+
 
