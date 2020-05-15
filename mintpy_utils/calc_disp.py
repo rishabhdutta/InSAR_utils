@@ -12,6 +12,7 @@ from datetime import datetime as dt
 import multiprocessing
 from joblib import Parallel, delayed
 from functools import partial
+import scipy.io as sio
 
 def datenum(d):
     '''
@@ -140,12 +141,16 @@ for i in range(ifglen):
     output = Parallel(n_jobs=num_cores)(delayed(cos_slip_)(j) for j in input)
     coseismic_disp[i,:] = np.array(output)
 
-fig = plt.figure(figsize=(18, 16))
-ax = fig.add_subplot(111)
-im = ax.pcolormesh(longitude, latitude, coseismic_disp, cmap='jet')
-fig.colorbar(im, ax=ax)
-ax.set_title('AT20 coseismic disp.')
-fig.tight_layout()
-plt.savefig('AT20_coseismic_timeseries.png')
+#fig = plt.figure(figsize=(18, 16))
+#ax = fig.add_subplot(111)
+#im = ax.pcolormesh(longitude, latitude, coseismic_disp, cmap='jet')
+#fig.colorbar(im, ax=ax)
+#ax.set_title('AT20 coseismic disp.')
+#fig.tight_layout()
+#plt.savefig('AT20_coseismic_timeseries.png')
 
+# save to .mat file for plotting
+varname1 = 'coseismic_disp.mat'
+sio.savemat(varname1, {'coseismic_disp':coseismic_disp, 'dem':height, \
+        'lon':longitude, 'lat':latitude})
 
