@@ -133,9 +133,10 @@ def cos_slip(arg_j, arg_i):
         output = c2 - c1 
     return output
 
+num_cores = multiprocessing.cpu_count()
 for i in range(ifglen):
     input = range(ifgwid)
-    num_cores = multiprocessing.cpu_count()
+    #num_cores = multiprocessing.cpu_count()
     #foo_ = partial(foo, arg2=arg2, arg3=arg3, arg4=arg4)
     cos_slip_ = partial(cos_slip, arg_i = i)
     output = Parallel(n_jobs=num_cores)(delayed(cos_slip_)(j) for j in input)
