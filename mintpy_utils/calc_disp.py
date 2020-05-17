@@ -55,7 +55,7 @@ def SBI_Year(imd):
     return out
 
 # work directory
-proj_dir = os.path.expanduser('/data/not_backed_up/rdtta/earthquakes/Utah2020/Sentinel/AT20/Stack/timeseries1')
+proj_dir = os.path.expanduser('/data/not_backed_up/rdtta/earthquakes/Utah2020/Sentinel/AT20/Stack/timeseries')
 
 # file in geo coordinates
 geom_file = os.path.join(proj_dir, 'geo/geo_geometryRadar.h5')
@@ -80,6 +80,10 @@ with h5py.File(geom_file, "r") as f:
     latitude = list(f[a_group_key])
     a_group_key = list(f.keys())[4]
     longitude = list(f[a_group_key])
+
+# shot the timeseries size 
+print('no. of dates: ', np.shape(ts_data)[0],' and the data spread is ',np.shape(ts_data)[1] \
+        ,' by ',np.shape(ts_data)[2],'\n')
 
 # convert dates from type 'bytes' to string 
 numdates = np.size(dates)
@@ -135,6 +139,12 @@ def cos_slip(arg_j, arg_i):
 
 num_cores = multiprocessing.cpu_count()
 for i in range(ifglen):
+    per5 = np.floor(ifglen/20)
+    if i == 0: 
+        print('---------------for loop initiated------------------\n')
+    if np.mod(i+1, per5) == 0:
+        num_fin = np.int(np.floor((i+1)/per5))
+        print('-----------------------',num_fin*5,'% finished-------------------------\n')
     input = range(ifgwid)
     #num_cores = multiprocessing.cpu_count()
     #foo_ = partial(foo, arg2=arg2, arg3=arg3, arg4=arg4)
