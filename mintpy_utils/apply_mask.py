@@ -28,7 +28,7 @@ maskbool = np.array(maskbool)
 
 for i in range(np.shape(maskbool)[0]):
     for j in range(np.shape(maskbool)[1]):
-        if maskbool[i,j] == True:
+        if maskbool[i,j] == False:
             coseismic_disp[i,j] = np.nan
 
 varname1 = 'coseismic_disp_mask.mat'
