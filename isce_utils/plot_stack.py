@@ -92,48 +92,42 @@ for i in range(numstacks):
         numlast = np.int(np.mod(Counter, 60))
         for k in range(numlast):
             ax = axs.flat[k]
-            
+            line_var = lines_variable[j-1]
+            filename = 'interferograms/' + line_var[0:17] + '/filt_fine.int.vrt'
+            ds = gdal.Open(filename, gdal.GA_ReadOnly)
+            slc = ds.GetRasterBand(1).ReadAsArray()
+            transform = ds.GetGeoTransform()
+            ds = None
 
-#_variable[0])
-#i = 61
-#for ax in axs.flat:
-    #ax.plot(x, y**2, 'tab:orange')
-#    line_var = lines_variable[i-1]
-#    filename = 'interferograms/' + line_var[0:17] + '/filt_fine.int.vrt'
+            # getting the min max of the axes
+            firstx = transform[0]
+            firsty = transform[3]
+            deltay = transform[5]
+            deltax = transform[1]
+            lastx = firstx+slc.shape[1]*deltax
+            lasty = firsty+slc.shape[0]*deltay
+            ymin = np.min([lasty,firsty])
+            ymax = np.max([lasty,firsty])
+            xmin = np.min([lastx,firstx])
+            xmax = np.max([lastx,firstx])
 
-#    ds = gdal.Open(filename, gdal.GA_ReadOnly)
-#    slc = ds.GetRasterBand(1).ReadAsArray()
-#    transform = ds.GetGeoTransform()
-#    ds = None
+            # put all zero values to nan and do not plot nan
+            try:
+                slc[slc==0]=np.nan
+            except:
+                pass
 
-    # getting the min max of the axes
-#    firstx = transform[0]
-#    firsty = transform[3]
-#    deltay = transform[5]
-#    deltax = transform[1]
-#    lastx = firstx+slc.shape[1]*deltax
-#    lasty = firsty+slc.shape[0]*deltay
-#    ymin = np.min([lasty,firsty])
-#    ymax = np.max([lasty,firsty])
-#    xmin = np.min([lastx,firstx])
-#    xmax = np.max([lastx,firstx])
-
-    # put all zero values to nan and do not plot nan
-#    try:
-#        slc[slc==0]=np.nan
-#    except:
-#        pass
-
-#    ax.imshow(np.angle(slc),cmap='rainbow',extent=[xmin,xmax,ymin,ymax])
-#    ax.text(.6,.92, line_var[0:17], fontsize=3)
-#    ax.get_yaxis().set_ticks([])
-#    ax.get_xaxis().set_ticks([])
-#    ax.axis('off')
-#    i = i + 1
-#    ax.label_outer()
-
-#plt.savefig('figures/stack2.pdf')
-
+            ax.imshow(np.angle(slc),cmap='rainbow',extent=[xmin,xmax,ymin,ymax])
+            ax.text(.6,.92, line_var[0:17], fontsize=3)
+            ax.get_yaxis().set_ticks([])
+            ax.get_xaxis().set_ticks([])
+            ax.axis('off')
+            figname = 'figures/stack'+np.str(j)+'.pdf'
+            ax.label_outer()
+            j = j+1
+        # plot the figures with subplots
+        plt.savefig(figname)
+             
 
 from plotIFG_isce import plotcomplexdata
 f = open("all_igrams.txt", "r")
