@@ -90,6 +90,8 @@ for i in range(numstacks):
         lines_variable = f.readlines()
         j = i*60+1 
         numlast = np.int(np.mod(Counter, 60))
+        if numlast == 0:
+            numlast =60
         for k in range(numlast):
             ax = axs.flat[k]
             line_var = lines_variable[j-1]
