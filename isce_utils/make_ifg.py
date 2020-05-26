@@ -8,6 +8,12 @@ Created on Tue May 26 11:00:12 2020
 
 import os 
 #import numpy as np
+import argparse
+
+parser = argparse.ArgumentParser(description='generate config files for new IFG pairs')
+parser.add_argument('-m', '--master', type=int, metavar='', required=True, help='Master date')
+parser.add_argument('-s', '--slave', type=int, metavar='', required=True, help='Slave date')
+args = parser.parse_args()
 
 conf_dir = '/data/not_backed_up/rdtta/Permafrost/Alaska/North_slope/DT102/Stack/configs'
 copyfile = '/data/not_backed_up/rdtta/Permafrost/Alaska/North_slope/DT102/Stack/configs/config_igram_20200407_20200513'
@@ -16,8 +22,8 @@ pres_dir = '/data/not_backed_up/rdtta/Permafrost/Alaska/North_slope/DT102/Stack/
 sys_comm1 = 'cp '+copyfile + ' '+ pres_dir + '/.'
 os.system(sys_comm1)
 
-mas_input = 20200715
-sla_input = 20200730
+mas_input = args.master
+sla_input = args.slave
 
 mas_input = str(mas_input)
 sla_input = str(sla_input)
@@ -45,6 +51,8 @@ list_of_lines[19] = 'outfile : '+stack_dir + '/merged/interferograms/' + \
 a_file = open(filename, "w")
 a_file.writelines(list_of_lines)
 a_file.close()    
+
+print('created the file: '+filename)
    
 copyfile = '/data/not_backed_up/rdtta/Permafrost/Alaska/North_slope/DT102/Stack/configs/config_igram_unw_20170312_20170529'
 
@@ -67,4 +75,7 @@ list_of_lines[7] = 'coh : '+stack_dir +'/merged/interferograms/' + \
 
 a_file = open(filename, "w")
 a_file.writelines(list_of_lines)
-a_file.close()  
+a_file.close() 
+
+print('created the file: '+filename)
+
