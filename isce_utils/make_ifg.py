@@ -53,7 +53,44 @@ a_file.writelines(list_of_lines)
 a_file.close()    
 
 print('created the file: '+filename)
-   
+sys_comm3 = 'echo SentinelWrapper.py -c /data/not_backed_up/rdtta/Permafrost/Alaska/North_slope/DT102/Stack/configs/config_igram_'+mas_input+'_'+sla_input+' >> run_11_new'
+os.system(sys_comm3)
+
+
+copyfile = '/data/not_backed_up/rdtta/Permafrost/Alaska/North_slope/DT102/Stack/configs/config_igram_filt_coh_20170324_20170405'
+
+sys_comm1 = 'cp '+copyfile + ' '+ pres_dir + '/.'
+os.system(sys_comm1)
+
+sys_comm2 = 'mv '+ pres_dir + '/config_igram_filt_coh_20170324_20170405 '+ \
+    pres_dir+'/config_igram_filt_coh_'+mas_input+'_'+sla_input
+os.system(sys_comm2)
+
+filename= pres_dir+'/config_igram_filt_coh_'+mas_input+'_'+sla_input
+a_file = open(filename, "r")
+list_of_lines = a_file.readlines()
+list_of_lines[5] = 'input : '+stack_dir +'/merged/interferograms/' + \
+    mas_input+'_'+sla_input + '/fine.int\n'
+list_of_lines[6] = 'filt : '+stack_dir +'/merged/interferograms/' + \
+    mas_input+'_'+sla_input + '/filt_fine.int\n'
+list_of_lines[7] = 'coh : '+stack_dir +'/merged/interferograms/' + \
+    mas_input+'_'+sla_input + '/filt_fine.cor\n'
+list_of_lines[9] = 'slc1 : '+stack_dir +'/merged/SLC/'+  \
+    mas_input+ '/'+mas_input+'.slc.full\n'
+list_of_lines[10] = 'slc2 : '+stack_dir +'/merged/SLC/'+  \
+    sla_input+ '/'+sla_input+'.slc.full\n'
+list_of_lines[11] = 'complex_coh : '+stack_dir +'/merged/interferograms/' + \
+    mas_input+'_'+sla_input + '/fine.cor.full\n'
+
+a_file = open(filename, "w")
+a_file.writelines(list_of_lines)
+a_file.close()
+
+print('created the file: '+filename)
+sys_comm3 = 'echo SentinelWrapper.py -c /data/not_backed_up/rdtta/Permafrost/Alaska/North_slope/DT102/Stack/configs/config_igram_filt_coh_'+mas_input+'_'+sla_input+' >> run_12_new'
+os.system(sys_comm3)
+
+
 copyfile = '/data/not_backed_up/rdtta/Permafrost/Alaska/North_slope/DT102/Stack/configs/config_igram_unw_20170312_20170529'
 
 sys_comm1 = 'cp '+copyfile + ' '+ pres_dir + '/.'
@@ -78,4 +115,9 @@ a_file.writelines(list_of_lines)
 a_file.close() 
 
 print('created the file: '+filename)
+sys_comm3 = 'echo SentinelWrapper.py -c /data/not_backed_up/rdtta/Permafrost/Alaska/North_slope/DT102/Stack/configs/config_igram_unw_'+mas_input+'_'+sla_input+' >> run_13_new'
+os.system(sys_comm3)
 
+# move all config files now to configs directory
+sys_comm4 = 'mv config_* /data/not_backed_up/rdtta/Permafrost/Alaska/North_slope/DT102/Stack/configs/.'
+os.system(sys_comm4)
