@@ -9,9 +9,9 @@ Created on Tue May 26 11:00:12 2020
 import os 
 #import numpy as np
 
-conf_dir = '/Users/duttar/Desktop'
-copyfile = '/Users/duttar/Desktop/config_igram_20200407_20200513'
-pres_dir = '/Users/duttar/Desktop/runfiles'
+conf_dir = '/data/not_backed_up/rdtta/Permafrost/Alaska/North_slope/DT102/Stack/configs'
+copyfile = '/data/not_backed_up/rdtta/Permafrost/Alaska/North_slope/DT102/Stack/configs/config_igram_20200407_20200513'
+pres_dir = '/data/not_backed_up/rdtta/Permafrost/Alaska/North_slope/DT102/Stack/run_files'
 
 sys_comm1 = 'cp '+copyfile + ' '+ pres_dir + '/.'
 os.system(sys_comm1)
