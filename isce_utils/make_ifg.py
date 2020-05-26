@@ -45,4 +45,26 @@ list_of_lines[19] = 'outfile : '+stack_dir + '/merged/interferograms/' + \
 a_file = open(filename, "w")
 a_file.writelines(list_of_lines)
 a_file.close()    
-    
+   
+copyfile = '/data/not_backed_up/rdtta/Permafrost/Alaska/North_slope/DT102/Stack/configs/config_igram_unw_20170312_20170529'
+
+sys_comm1 = 'cp '+copyfile + ' '+ pres_dir + '/.'
+os.system(sys_comm1)
+
+sys_comm2 = 'mv '+ pres_dir + '/config_igram_unw_20170312_20170529 '+ \
+    pres_dir+'/config_igram_unw_'+mas_input+'_'+sla_input
+os.system(sys_comm2)
+
+filename= pres_dir+'/config_igram_unw_'+mas_input+'_'+sla_input
+a_file = open(filename, "r")
+list_of_lines = a_file.readlines()
+list_of_lines[5] = 'ifg : '+stack_dir +'/merged/interferograms/' + \
+    mas_input+'_'+sla_input + '/filt_fine.int\n'
+list_of_lines[6] = 'unw : '+stack_dir +'/merged/interferograms/' + \
+    mas_input+'_'+sla_input + '/filt_fine.unw\n'
+list_of_lines[7] = 'coh : '+stack_dir +'/merged/interferograms/' + \
+    mas_input+'_'+sla_input + '/filt_fine.cor\n'
+
+a_file = open(filename, "w")
+a_file.writelines(list_of_lines)
+a_file.close()  
