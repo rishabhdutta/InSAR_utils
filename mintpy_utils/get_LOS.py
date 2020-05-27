@@ -19,6 +19,6 @@ with h5py.File(geom_file, "r") as f:
     a_group_key = list(f.keys())[2]
     inc_angle = list(f[a_group_key])
 
-varname1 = 'los_AT20'
+varname1 = 'los_AT20.mat'
 sio.savemat(varname1, {'azim_angle':azim_angle, 'inc_angle':inc_angle})
 
