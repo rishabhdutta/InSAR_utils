@@ -35,7 +35,6 @@ if Counter > num_cores:
 else: 
     num_files = Counter
 
-
 numfile_runs = np.zeros((num_files,1))
 for i in range(num_files):
     if Counter > num_cores: 
@@ -70,9 +69,12 @@ def run_file_divided(numcurrent, fileid_run, filename):
     a_file.writelines(copylines)
     a_file.close()
 
-
-
-
+for i in range(num_files):
+    run_file_divided(i, fileidx, filename)
+    sys_comm1 = 'chmod +x '+ filename+ '_num'+ str(i)
+    os.system(sys_comm1)
+    showmssg = 'nohup ./' + filename + '_num'+ str(i) + ' > nohup_files/nohup_run' +str(i)+ '.out &'
+    print(showmssg)
 
 
 
