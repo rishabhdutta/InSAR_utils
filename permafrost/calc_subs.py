@@ -98,5 +98,33 @@ for i in range(numdates):
     datesn[i] = dates[i].decode("utf-8")
     dates_int[i] = int(dates[i].decode("utf-8"))
 
+dates_frac = SBI_Year(datesn)
 
+# select the dates to put in matrix A 
+inddates = np.zeros((numdates,1))
+for i in range(numdates):
+    dates_i = dates_frac[i]
+    frac_part = dates_i - np.floor(dates_i)
+    if frac_part < .41506849 :
+        inddates[i] = 0 
+    elif frac_part > .81506849 : 
+        inddates[i] = 0 
+    else: 
+        inddates[i] = 1 
+
+include_dates = np.where(inddates == 1)[0]
+print('included dates for estimation are: \n', datesn[include_dates]) 
+
+dates_frac_included = dates_frac[include_dates]
+
+# get the timeseries data attributes 
+ifglen = np.shape(longitude)[0]
+ifgwid = np.shape(longitude)[1]
+ts_data = np.array(ts_data)
+longitude = np.array(longitude)
+latitude = np.array(latitude)
+
+
+
+    
 
