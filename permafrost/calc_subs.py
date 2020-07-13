@@ -36,11 +36,9 @@ def SBI_Year(imd):
     out - numpy (n,1) Vector with dates in int
     created by Rishabh Dutta
     '''
-
     dstr = imd
     nd = imd.shape[0]
     out = np.zeros((nd,1))
-
     for k in range(nd):
         # get first day of year, minus 1/2 a day:
         d1 = dt.strptime(dstr[k][0][0:4]+'0101', '%Y%m%d')
@@ -50,14 +48,12 @@ def SBI_Year(imd):
         dne = datenum(d2) + 0.5
         # get number of days in that year:
         ndays = dne - dn1 
-
         # get day of year:
         d3 = dt.strptime(dstr[k][0], '%Y%m%d')
         doy = datenum(d3) - dn1 
         # get fractional year:
         fracyr = doy/ndays
         out[k] = int(dstr[k][0][0:4])+ fracyr 
-
     return out
 
 # work directory
@@ -93,6 +89,14 @@ with h5py.File(maskfile, "r") as f:
     maskbool = list(f[a_group_key])
 
 maskbool = np.array(maskbool)
+
+# convert dates from type 'bytes' to string 
+numdates = np.size(dates)
+datesn = np.empty([numdates, 1], dtype="<U10")
+dates_int = np.zeros((numdates,1))
+for i in range(numdates):
+    datesn[i] = dates[i].decode("utf-8")
+    dates_int[i] = int(dates[i].decode("utf-8"))
 
 
 
