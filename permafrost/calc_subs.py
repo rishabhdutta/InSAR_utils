@@ -124,6 +124,24 @@ ts_data = np.array(ts_data)
 longitude = np.array(longitude)
 latitude = np.array(latitude)
 
+numpixels = ifglen*ifgwid
+
+def x_est(arg_i):
+    '''
+
+    '''
+    ind_len = np.mod(arg_i, ifglen) - 1
+    if ind_len == 0 : 
+        ind_len = ifglen - 1 
+    ind_wid = np.int(np.floor(arg_i/ifglen)) - 1 
+    # check if masked 
+    if maskbool[ind_len, ind_wid] == False: 
+        continue
+    # get the matrix A 
+    Amat = ts_data[include_dates, ind_len, ind_wid]
+    
+
+
 
 
     
