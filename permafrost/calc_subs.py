@@ -125,9 +125,15 @@ for i in range(include_dates.shape[0]-1):
     if dates_floor[i+1] != dates_floor[i]:
         years_incl = np.concatenate((years_incl, dates_floor[i+1]), axis=0)
 
-for i in range(years_incl.shape[0]):
-    varmat_load = 
-
+a_dictionary = {}
+mat_c1 = np.empty(())
+for years in years_incl:
+    varmat_load = 'data_temp_addt/ds633/addt' + str(np.int(years)) + '.mat'
+    mat_c1 = sio.loadmat(varmat_load)
+    lonlat = mat_c1['lonlat']
+    var_addt = 'addt' + str(np.int(years))
+    a_dictionary["addt_%s" %np.int(years)] = mat_c1[var_addt]
+    a_dictionary["detailsaddt_%s" % yearnow] = mat_c1['details_addt']
 
 # get the timeseries data attributes 
 ifglen = np.shape(longitude)[0]
