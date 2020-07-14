@@ -144,12 +144,40 @@ latitude = np.array(latitude)
 
 numpixels = ifglen*ifgwid
 
+lonvals_addt = lonlat[:,0] - 360
+latvals_addt = lonlat[:,1]
+addt_pixelwise = np.zeros((include_dates.shape[0], ifglen, ifgwid))
+for i in range(numpixels):
+    ind_len = np.mod(i+1, ifglen) - 1 
+    if np.mod(i+1, ifglen) == 0: 
+        ind_len = ifglen -1 
+    ind_wid = np.int(np.floor((i+1)/ifglen)) - 1
+    
+    if maskbool[ind_len, ind_wid] == False:
+        continue 
+    # get the latitude and longitude at the index 
+    lon_valind = longitude[ind_len, ind_wid]
+    lat_valind = latitude[ind_len, ind_wid]
+    
+    # find the closest lonlat of the addt values 
+    abs_dist_lon = np.abs(lonvals_addt - lon_valind)
+    abs_dist_lat = np.abs(latvals_addt - lat_valind)
+    ind_close1 = np.where(abs_dist_lon == np.min(abs_dist_lon))
+    ind_close2 = np.where(abs_dist_lat == np.min(abs_dist_lat))
+
+    indcommon = np.intersect1d(ind_close1, ind_close2)
+    
+
+
+    
+
+
 def x_est(arg_i):
     '''
 
     '''
     ind_len = np.mod(arg_i, ifglen) - 1
-    if ind_len == 0 : 
+    if np.mod(arg_i, ifglen) == 0: 
         ind_len = ifglen - 1 
     ind_wid = np.int(np.floor(arg_i/ifglen)) - 1 
     # check if masked 
