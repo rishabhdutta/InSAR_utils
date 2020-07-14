@@ -139,6 +139,9 @@ def x_est(arg_i):
         continue
     # get the matrix A 
     Amat = ts_data[include_dates, ind_len, ind_wid]
+    Amat = np.reshape(Amat, (Amat.shape[0], 1))
+    # get the matrix B 
+    # first column is time in year (to get subsidence/year)
     
 
 
