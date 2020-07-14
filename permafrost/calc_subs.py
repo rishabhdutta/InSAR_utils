@@ -117,6 +117,18 @@ print('included dates for estimation are: \n', datesn[include_dates])
 
 dates_frac_included = dates_frac[include_dates]
 
+# load the addt files 
+dates_floor = np.floor(dates_frac_included)
+for i in range(include_dates.shape[0]-1):
+    if i == 0:
+        years_incl = dates_floor[i]
+    if dates_floor[i+1] != dates_floor[i]:
+        years_incl = np.concatenate((years_incl, dates_floor[i+1]), axis=0)
+
+for i in range(years_incl.shape[0]):
+    varmat_load = 
+
+
 # get the timeseries data attributes 
 ifglen = np.shape(longitude)[0]
 ifgwid = np.shape(longitude)[1]
