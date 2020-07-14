@@ -145,8 +145,8 @@ for i in range(locnum):
     print(i)
     
 var_name = 'addt2016.mat'
-sio.savemat(var_name, {'addt2016':addt2016, 'details_addt':details_addt})            
-    
+sio.savemat(var_name, {'addt2016':addt2016, 'details_addt':details_addt, \
+                       'lonlat':locall})             
     
 ##############################################################################  
 # plot the addt for the year 2017 
@@ -220,8 +220,8 @@ for i in range(locnum):
     print(i)
     
 var_name = 'addt2017.mat'
-sio.savemat(var_name, {'addt2017':addt2017, 'details_addt':details_addt})            
-    
+sio.savemat(var_name, {'addt2017':addt2017, 'details_addt':details_addt, \
+                       'lonlat':locall})           
    
 ##############################################################################      
 # plot the addt for the year 2018 
@@ -295,7 +295,8 @@ for i in range(locnum):
     print(i)
     
 var_name = 'addt2018.mat'
-sio.savemat(var_name, {'addt2018':addt2018, 'details_addt':details_addt})   
+sio.savemat(var_name, {'addt2018':addt2018, 'details_addt':details_addt, \
+                       'lonlat':locall})  
     
 ##############################################################################      
 # plot the addt for the year 2019 
@@ -369,7 +370,7 @@ for i in range(locnum):
     print(i)
     
 var_name = 'addt2019.mat'
-sio.savemat(var_name, {'addt2019':addt2019, 'details_addt':details_addt})   
-
+sio.savemat(var_name, {'addt2019':addt2019, 'details_addt':details_addt, \
+                       'lonlat':locall})  
     
 
