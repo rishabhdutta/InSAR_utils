@@ -133,7 +133,7 @@ for years in years_incl:
     lonlat = mat_c1['lonlat']
     var_addt = 'addt' + str(np.int(years))
     a_dictionary["addt_%s" %np.int(years)] = mat_c1[var_addt]
-    a_dictionary["detailsaddt_%s" % yearnow] = mat_c1['details_addt']
+    a_dictionary["detailsaddt_%s" %np.int(years)] = mat_c1['details_addt']
 
 # get the timeseries data attributes 
 ifglen = np.shape(longitude)[0]
@@ -146,6 +146,16 @@ numpixels = ifglen*ifgwid
 
 lonvals_addt = lonlat[:,0] - 360
 latvals_addt = lonlat[:,1]
+
+# normalize the addt values with the overall maximum value 
+maxaddt = np.zeros((years_incl.shape[0], 1))
+i = 0 
+for years in years_incl:
+    varaddt = "addt_" + str(np.int(years))
+    maxaddt[i] = np.max(a_dictionary[varaddt])
+    i = i+1
+maxaddtall = np.max(maxaddt) # maximum addt value
+
 addt_pixelwise = np.zeros((include_dates.shape[0], ifglen, ifgwid))
 for i in range(numpixels):
     ind_len = np.mod(i+1, ifglen) - 1 
@@ -166,11 +176,25 @@ for i in range(numpixels):
     ind_close2 = np.where(abs_dist_lat == np.min(abs_dist_lat))
 
     indcommon = np.intersect1d(ind_close1, ind_close2)
-    
-
-
-    
-
+    ind_tsdate = 0 
+    # go through the time series dates and find the corresponding addt values
+    for day in dates_frac_included:
+        if np.mod(np.floor(day),4) > 0:
+            leapdays = 365 
+        else: 
+            leapdays = 366
+        dayindex = (day - np.floor(day))* leapdays + .5
+        
+        varaddt1 = "detailsaddt_" + str(np.int(np.floor(day)[0]))
+        firstday_addt = a_dictionary[varaddt1][indcommon, 1]
+        
+        varaddt2 = "addt_" + str(np.int(np.floor(day)[0]))
+        if firstday_addt > dayindex: 
+            addt_pixelwise[ind_tsdate, ind_len, ind_wid] = 1e-5 
+        else: 
+            day_diff = dayindex - firstday_addt 
+            addt_pixelwise[ind_tsdate, ind_len, ind_wid] = a_dictionary[varaddt2][indcommon, np.int(np.round(day_diff[0]))]/maxaddtall
+        ind_tsdate = ind_tsdate + 1
 
 def x_est(arg_i):
     '''
