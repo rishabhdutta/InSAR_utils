@@ -175,6 +175,8 @@ for i in range(numpixels):
     ind_close1 = np.where(abs_dist_lon == np.min(abs_dist_lon))
     ind_close2 = np.where(abs_dist_lat == np.min(abs_dist_lat))
     indcommon = np.intersect1d(ind_close1, ind_close2)
+    if indcommon.shape[0] > 1: 
+        indcommon = indcommon[0]
     ind_tsdate = 0 
     # go through the time series dates and find the corresponding addt values
     for day in dates_frac_included:
