@@ -195,6 +195,10 @@ for i in range(numpixels):
             addt_pixelwise[ind_tsdate, ind_len, ind_wid] = a_dictionary[varaddt2][indcommon, np.int(np.round(day_diff[0]))]/maxaddtall
         ind_tsdate = ind_tsdate + 1
 
+var_name = 'addt_tspixel.mat'
+sio.savemat(var_name, {'addt_ts':addt_pixelwise, 'lon':longitude, \
+        'lat':latitude})
+
 def x_est(arg_i):
     '''
 
