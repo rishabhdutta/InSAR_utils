@@ -158,23 +158,22 @@ maxaddtall = np.max(maxaddt) # maximum addt value
 
 addt_pixelwise = np.zeros((include_dates.shape[0], ifglen, ifgwid))
 for i in range(numpixels):
+    if np.mod(i, 50000) == 0:
+        print('loops completed: ', i)
     ind_len = np.mod(i+1, ifglen) - 1 
     if np.mod(i+1, ifglen) == 0: 
         ind_len = ifglen -1 
     ind_wid = np.int(np.floor((i+1)/ifglen)) - 1
-    
     if maskbool[ind_len, ind_wid] == False:
         continue 
     # get the latitude and longitude at the index 
     lon_valind = longitude[ind_len, ind_wid]
     lat_valind = latitude[ind_len, ind_wid]
-    
     # find the closest lonlat of the addt values 
     abs_dist_lon = np.abs(lonvals_addt - lon_valind)
     abs_dist_lat = np.abs(latvals_addt - lat_valind)
     ind_close1 = np.where(abs_dist_lon == np.min(abs_dist_lon))
     ind_close2 = np.where(abs_dist_lat == np.min(abs_dist_lat))
-
     indcommon = np.intersect1d(ind_close1, ind_close2)
     ind_tsdate = 0 
     # go through the time series dates and find the corresponding addt values
@@ -184,10 +183,8 @@ for i in range(numpixels):
         else: 
             leapdays = 366
         dayindex = (day - np.floor(day))* leapdays + .5
-        
         varaddt1 = "detailsaddt_" + str(np.int(np.floor(day)[0]))
         firstday_addt = a_dictionary[varaddt1][indcommon, 1]
-        
         varaddt2 = "addt_" + str(np.int(np.floor(day)[0]))
         if firstday_addt > dayindex: 
             addt_pixelwise[ind_tsdate, ind_len, ind_wid] = 1e-5 
