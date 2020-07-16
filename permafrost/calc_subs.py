@@ -219,9 +219,11 @@ def x_est(arg_i, ifglen, dates_frac_included, include_dates, ts_data, addt_pixel
     # get the matrix A 
     # first column is time in year (to get subsidence/year)
     fir_colm = dates_frac_included - dates_frac_included[0]
-    sec_colm = addt_pixelwise[:, ind_len, ind_wid]
+    sec_colm = -addt_pixelwise[:, ind_len, ind_wid]
     sec_colm = np.reshape(sec_colm, (sec_colm.shape[0], 1))
-    Amat = np.concatenate((fir_colm, sec_colm), axis = 1)
+    thi_colm = np.ones((sec_colm.shape[0], 1))
+    Amat_1 = np.concatenate((fir_colm, sec_colm), axis = 1)
+    Amat = np.concatenate((Amat_1, thi_colm), axis = 1)
     # solution of Ax = B 
     AtA = np.matmul(Amat.conj().transpose(), Amat)
     AtB = np.matmul(Amat.conj().transpose(), Bmat)
