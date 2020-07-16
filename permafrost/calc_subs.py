@@ -203,6 +203,8 @@ def x_est(arg_i, ifglen, dates_frac_included, include_dates, ts_data, addt_pixel
     '''
     Estimate the overall and seasonal subsidence 
     '''
+    if np.int(np.mod(arg_i, 50000)) == 0: 
+        print('in loop number : ', arg_i)
     ind_len = np.mod(arg_i, ifglen) - 1
     if np.mod(arg_i, ifglen) == 0: 
         ind_len = ifglen - 1 
