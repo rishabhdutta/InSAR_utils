@@ -195,13 +195,13 @@ for i in range(numpixels):
             addt_pixelwise[ind_tsdate, ind_len, ind_wid] = a_dictionary[varaddt2][indcommon, np.int(np.round(day_diff[0]))]/maxaddtall
         ind_tsdate = ind_tsdate + 1
 
-var_name = 'addt_tspixel.mat'
-sio.savemat(var_name, {'addt_ts':addt_pixelwise, 'lon':longitude, \
-        'lat':latitude})
+hf = h5py.File('data.h5', 'r')
+addt_pixelwise = hf.get('addt_ts')
+addt_pixelwise = np.array(addt_pixelwise)
 
-def x_est(arg_i):
+def x_est(arg_i, ifglen, dates_frac_included, include_dates, ts_data, addt_pixelwise):
     '''
-
+    Estimate the overall and seasonal subsidence 
     '''
     ind_len = np.mod(arg_i, ifglen) - 1
     if np.mod(arg_i, ifglen) == 0: 
@@ -210,12 +210,28 @@ def x_est(arg_i):
     # check if masked 
     if maskbool[ind_len, ind_wid] == False: 
         continue
-    # get the matrix A 
-    Amat = ts_data[include_dates, ind_len, ind_wid]
-    Amat = np.reshape(Amat, (Amat.shape[0], 1))
     # get the matrix B 
+    Bmat = ts_data[include_dates, ind_len, ind_wid]
+    Bmat = np.reshape(Bmat, (Bmat.shape[0], 1))
+    # get the matrix A 
     # first column is time in year (to get subsidence/year)
+    fir_colm = dates_frac_included - dates_frac_included[0]
+    sec_colm = addt_pixelwise[:, ind_len, ind_wid]
+    sec_colm = np.reshape(sec_colm, (sec_colm.shape[0], 1))
+    Amat = np.concatenate((fir_colm, sec_colm), axis = 1)
+    # solution of Ax = B 
+    AtA = np.matmul(Amat.conj().transpose(), Amat)
+    AtB = np.matmul(Amat.conj().transpose(), Bmat)
+    solx = np.linalg.solve(AtA, AtB)
+    return solx
+
+
+
+
+
     
+
+
 
 
 
