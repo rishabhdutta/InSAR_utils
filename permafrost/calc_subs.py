@@ -239,5 +239,7 @@ hf.create_dataset('lon', data=longitude)
 hf.create_dataset('lat', data=latitude)
 hf.close()
 
-    
+var_name = 'subsdata.mat' 
+sio.savemat(var_name, {'subs_data':subs_data,  \
+        'lon':longitude, 'lat':latitude})
 
