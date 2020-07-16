@@ -208,7 +208,7 @@ def x_est(arg_i, ifglen, dates_frac_included, include_dates, ts_data, addt_pixel
         ind_len = ifglen - 1 
     ind_wid = np.int(np.floor(arg_i/ifglen)) - 1 
     # check if masked 
-    if maskbool[ind_len, ind_wid] == False: 
+    if maskbool[ind_len, ind_wid] == False:
         continue
     # get the matrix B 
     Bmat = ts_data[include_dates, ind_len, ind_wid]
@@ -225,6 +225,9 @@ def x_est(arg_i, ifglen, dates_frac_included, include_dates, ts_data, addt_pixel
     solx = np.linalg.solve(AtA, AtB)
     return solx
 
+num_cores = multiprocessing.cpu_count()
+x_est_ = partial(x_est, ifglen = ifglen, dates_frac_included = dates_frac_included, include_dates= include_dates, ts_data= ts_data, addt_pixelwise = addt_pixelwise)
+output = Parallel(n_jobs=num_cores)(delayed(x_est_)(i) for i in range(numpixels))
 
 
 
