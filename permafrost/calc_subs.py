@@ -212,7 +212,7 @@ def x_est(arg_i, ifglen, dates_frac_included, include_dates, ts_data, addt_pixel
     ind_wid = np.int(np.floor(arg_i/ifglen)) - 1 
     # check if masked 
     if maskbool[ind_len, ind_wid] == False:
-        return np.array([[np.nan],[np.nan]])
+        return np.array([[np.nan],[np.nan],[np.nan]])
     # get the matrix B 
     Bmat = ts_data[include_dates, ind_len, ind_wid]
     Bmat = np.reshape(Bmat, (Bmat.shape[0], 1))
