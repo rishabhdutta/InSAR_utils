@@ -109,6 +109,38 @@ include_dates = np.where(inddates == 1)[0]
 
 dates_frac_included = dates_frac[include_dates]
 
+ts_data = np.array(ts_data)
+valy = 3887
+valx = 3969
 
+# make the forward model - get matrix B 
+# matrix A 
+fir_colm = dates_frac_included - dates_frac_included[0]
+
+hf = h5py.File('data.h5', 'r')
+addt_pixelwise = hf.get('addt_ts')
+addt_pixelwise = np.array(addt_pixelwise)
+hf.close()
+
+sec_colm = addt_pixelwise[:, valx, valy]
+sec_colm = np.reshape(sec_colm, (sec_colm.shape[0], 1))
+Amat = np.concatenate((fir_colm, sec_colm), axis = 1)
+
+# x values 
+mat_c1 = sio.loadmat('subsdata.mat')
+subs_data = mat_c1['subs_data']
+subs_data1 = subs_data[:, 0, 0]
+ifglen = np.shape(longitude)[0]
+ifgwid = np.shape(longitude)[1]
+subs_data1 = np.reshape(subs_data1, (ifglen, ifgwid), order='F')  
+
+subs_data2 = subs_data[:, 1, 0]
+subs_data2 = np.reshape(subs_data2, (ifglen, ifgwid), order='F')
+
+sol_x = np.array([[subs_data1[valy-1,valx-1]], [subs_data2[valy-1,valx-1]]])
+Bmat = np.matmul(Amat, solx)
+
+plt.plot(dates_frac_included, ts_data[include_dates, valy-1, valx-1], 'bs', dates_frac_included, Bmat)
+plt.show()
 
 
