@@ -198,6 +198,7 @@ for i in range(numpixels):
 hf = h5py.File('data.h5', 'r')
 addt_pixelwise = hf.get('addt_ts')
 addt_pixelwise = np.array(addt_pixelwise)
+hf.close()
 
 def x_est(arg_i, ifglen, dates_frac_included, include_dates, ts_data, addt_pixelwise):
     '''
@@ -231,15 +232,12 @@ num_cores = multiprocessing.cpu_count()
 x_est_ = partial(x_est, ifglen = ifglen, dates_frac_included = dates_frac_included, include_dates= include_dates, ts_data= ts_data, addt_pixelwise = addt_pixelwise)
 output = Parallel(n_jobs=num_cores)(delayed(x_est_)(i) for i in range(numpixels))
 
-
-
-
-    
-
-
-
-
-
+subs_data = np.array(output)
+hf = h5py.File('subs_data.h5', 'w')
+hf.create_dataset('subs_data', data=subs_data)
+hf.create_dataset('lon', data=longitude)
+hf.create_dataset('lat', data=latitude)
+hf.close()
 
     
 
