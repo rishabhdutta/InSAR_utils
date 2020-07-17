@@ -151,7 +151,14 @@ subs_data3 = np.reshape(subs_data3, (ifglen, ifgwid), order='F')
 sol_x = np.array([[subs_data1[valy-1,valx-1]], [subs_data2[valy-1,valx-1]], [subs_data3[valy-1,valx-1]]])
 Bmat = np.matmul(Amat, sol_x)
 
-plt.plot(dates_frac_included, ts_data[include_dates, valy-1, valx-1], 'bs', dates_frac_included, Bmat)
+fig, ax = plt.subplots()
+ax.plot(dates_frac_included, ts_data[include_dates, valy-1, valx-1], 'bs', label="time series data")
+ax.plot(dates_frac_included, Bmat, label="Stefan model")
+ax.legend()
+ax.set_xlabel('Year')
+ax.set_ylabel('Displacements [m]')
+title_var = 'Y: '+str(valy) + ', X: '+str(valx)
+ax.set_title(title_var)
 save_var = 'Y' + str(valy) + 'X' + str(valx) + '.png'
 plt.savefig(save_var, dpi=150)
 
