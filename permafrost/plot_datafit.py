@@ -129,7 +129,7 @@ addt_pixelwise = hf.get('addt_ts')
 addt_pixelwise = np.array(addt_pixelwise)
 hf.close()
 
-sec_colm = addt_pixelwise[:, valx, valy]
+sec_colm = -addt_pixelwise[:, valy-1, valx-1]
 sec_colm = np.reshape(sec_colm, (sec_colm.shape[0], 1))
 thi_colm = np.ones((sec_colm.shape[0], 1))
 Amat_1 = np.concatenate((fir_colm, sec_colm), axis = 1)
@@ -151,9 +151,28 @@ subs_data3 = np.reshape(subs_data3, (ifglen, ifgwid), order='F')
 sol_x = np.array([[subs_data1[valy-1,valx-1]], [subs_data2[valy-1,valx-1]], [subs_data3[valy-1,valx-1]]])
 Bmat = np.matmul(Amat, sol_x)
 
+dates_floor = np.floor(dates_frac_included)
+for i in range(include_dates.shape[0]-1):
+    if i == 0:
+        years_incl = dates_floor[i]
+    if dates_floor[i+1] != dates_floor[i]:
+        years_incl = np.concatenate((years_incl, dates_floor[i+1]), axis=0)
+
+indplotyr = np.zeros((years_incl.shape[0],1))
+j = 0
+for i in years_incl:
+    indallyr = np.where(np.floor(dates_frac_included) == i)
+    indplotyr[j] = np.int(indallyr[0][0])
+    j = j+1
+
 fig, ax = plt.subplots()
 ax.plot(dates_frac_included, ts_data[include_dates, valy-1, valx-1], 'bs', label="time series data")
-ax.plot(dates_frac_included, Bmat, label="Stefan model")
+for i in range(years_incl.shape[0]):
+    if i != years_incl.shape[0]-1:
+        ax.plot(dates_frac_included[np.int(indplotyr[i]):np.int(indplotyr[i+1]-1)], Bmat[np.int(indplotyr[i]):np.int(indplotyr[i+1]-1)], 'g-')
+    else:
+        ax.plot(dates_frac_included[np.int(indplotyr[i]):-1], Bmat[np.int(indplotyr[i]):-1], 'g-', label="Stefan model")
+
 ax.legend()
 ax.set_xlabel('Year')
 ax.set_ylabel('Displacements [m]')
