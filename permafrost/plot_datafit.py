@@ -13,6 +13,13 @@ import h5py
 from datetime import datetime as dt
 import os
 import scipy.io as sio
+import argparse
+
+parser = argparse.ArgumentParser(description='plot the timeseries and the data fit with the stefan model')
+parser.add_argument('-y', '--yindex', type=str, metavar='', required=True, help='input y index value')
+parser.add_argument('-x', '--xindex', type=str, metavar='', required=True, help='input x index value')
+
+args = parser.parse_args()
 
 def datenum(d):
     '''
@@ -110,8 +117,8 @@ include_dates = np.where(inddates == 1)[0]
 dates_frac_included = dates_frac[include_dates]
 
 ts_data = np.array(ts_data)
-valy = 3887
-valx = 3969
+valy = np.int(args.yindex)
+valx = np.int(args.xindex)
 
 # make the forward model - get matrix B 
 # matrix A 
@@ -124,7 +131,9 @@ hf.close()
 
 sec_colm = addt_pixelwise[:, valx, valy]
 sec_colm = np.reshape(sec_colm, (sec_colm.shape[0], 1))
-Amat = np.concatenate((fir_colm, sec_colm), axis = 1)
+thi_colm = np.ones((sec_colm.shape[0], 1))
+Amat_1 = np.concatenate((fir_colm, sec_colm), axis = 1)
+Amat = np.concatenate((Amat_1, thi_colm), axis = 1)
 
 # x values 
 mat_c1 = sio.loadmat('subsdata.mat')
@@ -136,11 +145,14 @@ subs_data1 = np.reshape(subs_data1, (ifglen, ifgwid), order='F')
 
 subs_data2 = subs_data[:, 1, 0]
 subs_data2 = np.reshape(subs_data2, (ifglen, ifgwid), order='F')
+subs_data3 = subs_data[:, 2, 0]
+subs_data3 = np.reshape(subs_data3, (ifglen, ifgwid), order='F')
 
-sol_x = np.array([[subs_data1[valy-1,valx-1]], [subs_data2[valy-1,valx-1]]])
-Bmat = np.matmul(Amat, solx)
+sol_x = np.array([[subs_data1[valy-1,valx-1]], [subs_data2[valy-1,valx-1], [subs_data3[valy-1,valx-1]]])
+Bmat = np.matmul(Amat, sol_x)
 
 plt.plot(dates_frac_included, ts_data[include_dates, valy-1, valx-1], 'bs', dates_frac_included, Bmat)
-plt.show()
+save_var = 'Y' + str(valy) + 'X' + str(valx) + '.png'
+plt.savefig(save_var, dpi=150)
 
 
