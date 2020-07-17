@@ -148,7 +148,7 @@ subs_data2 = np.reshape(subs_data2, (ifglen, ifgwid), order='F')
 subs_data3 = subs_data[:, 2, 0]
 subs_data3 = np.reshape(subs_data3, (ifglen, ifgwid), order='F')
 
-sol_x = np.array([[subs_data1[valy-1,valx-1]], [subs_data2[valy-1,valx-1], [subs_data3[valy-1,valx-1]]])
+sol_x = np.array([[subs_data1[valy-1,valx-1]], [subs_data2[valy-1,valx-1]], [subs_data3[valy-1,valx-1]]])
 Bmat = np.matmul(Amat, sol_x)
 
 plt.plot(dates_frac_included, ts_data[include_dates, valy-1, valx-1], 'bs', dates_frac_included, Bmat)
