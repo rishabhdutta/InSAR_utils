@@ -47,6 +47,11 @@ seasonal_subs = subs_data[:,1]
 ifglen = np.shape(longitude)[0]
 ifgwid = np.shape(longitude)[1]
 
+# function of porosity for mixed soil 
+integrad_mixed = lambda y: .0028 + (2/23)*(.44 + .56*np.exp(-5.5*y))
+# total water depth considering full saturation
+subs_z = lambda x: quad(integrad_mixed, 0.0358, x)
+
 def get_ALT(arg_i, ifglen, seasonal_subs):
     '''
     Estimate ALT from seasonal subsidence value
@@ -70,10 +75,8 @@ def get_ALT(arg_i, ifglen, seasonal_subs):
     elif seasubs >= 0.0353 :
         return .7+ (seasubs - 0.0353)*23/(2*0.44)
     else: 
-        integrad_mixed = lambda y: .0028 + (2/23)*(.44 + .56*np.exp(-5.5*y))
-        subs_z = lambda x: quad(integrad_mixed, 0.0358, x)
         val_ALT = leastsq(lambda z: subs_z(z) - seasubs, .5)
-        return val_ALT
+        return val_ALT[0]
 
 
 
