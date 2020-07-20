@@ -46,6 +46,7 @@ subs_data = mat_c1['subs_data']
 seasonal_subs = subs_data[:,1]
 ifglen = np.shape(longitude)[0]
 ifgwid = np.shape(longitude)[1]
+numpixels = ifglen*ifgwid
 
 # function of porosity for mixed soil 
 integrad_mixed = lambda y: .0028 + (2/23)*(.44 + .56*np.exp(-5.5*y))
@@ -78,8 +79,11 @@ def get_ALT(arg_i, ifglen, seasonal_subs):
         val_ALT = leastsq(lambda z: subs_z(z) - seasubs, .5)
         return val_ALT[0]
 
+num_cores = multiprocessing.cpu_count()
+get_ALT_ = partial(get_ALT, ifglen = ifglen, seasonal_subs= seasonal_subs)
+output = Parallel(n_jobs=num_cores)(delayed(get_ALT_)(i) for i in range(numpixels))
+ALT_data = np.array(output)
 
-
-
-
+var_name = 'ALTdata.mat' 
+sio.savemat(var_name, {'ALT_data':ALT_data, 'lon':longitude, 'lat':latitude})
 
