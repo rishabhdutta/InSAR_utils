@@ -21,7 +21,8 @@ import multiprocessing
 from joblib import Parallel, delayed
 from functools import partial
 import scipy.io as sio
-
+from scipy.integrate import quad
+from scipy.optimize import leastsq
 
 # work directory
 proj_dir = os.path.expanduser('/data/not_backed_up/rdtta/Permafrost/Alaska/North_slope/DT102/Stack/timeseries')
