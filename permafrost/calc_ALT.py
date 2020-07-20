@@ -69,6 +69,11 @@ def get_ALT(arg_i, ifglen, seasonal_subs):
     elif seasubs >= 0.0353 :
         return .7+ (seasubs - 0.0353)*23/(2*0.44)
     else: 
+        integrad_mixed = lambda y: .0028 + (2/23)*(.44 + .56*np.exp(-5.5*y))
+        subs_z = lambda x: quad(integrad_mixed, 0.0358, x)
+        val_ALT = leastsq(lambda z: subs_z(z) - seasubs, .5)
+        return val_ALT
+
 
 
 
