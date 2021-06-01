@@ -18,7 +18,7 @@
 #make run_# files executable, change the file permission accordingly
 #(e.g., chmod +x run_01_unpack_slc).
 
-# all the scripts are run as a sudoer for permissions to right on the external drive
+# all the scripts are run as a sudoer for permissions to write on the external drive
 
 sudo mkdir stackprocessing
 cd stackprocessing
@@ -29,10 +29,36 @@ sudo env "PATH=$PATH" stackSentinel.py -h     #To get an overview of all the con
 sudo mkdir SLCs
 cd SLCs
 
+# if you already downloaded the download.py and asf_datapool.csv files, then run
+sudo env "PATH=$PATH" python ./download-all-*.py . asf-datapool-results-*.csv
+# you will have to provide ASF username and password
 
 # get the dem for the region in the DEM folder
+cd ..
+sudo mkdir DEM
+cd DEM
 sudo env "PATH=$PATH" dem.py -a stitch -b 31 33 -114 -113 -k  -r -l  -s 1 -n rishabhgeo -w password
 
+# you might want to use -f flag if some of the tiles are not available
 
+# once you get the DEM downloaded, run the following to make the DEM files ISCE readable
+sudo env "PATH=$PATH" fixImageXml.py -i demLat*.dem -f
 
+# if dem.py didn't work and you had to manually download srtm 30m resolution DEM
+sudo env "PATH=$PATH" gdal_merge.py tiffs/*.tif -o mydem.tif
+sudo env "PATH=$PATH" gdalwarp -t_srs '+proj=longlat +datum=WGS84' mydem.tif mydem2.tif
+sudo env "PATH=$PATH" gdal_translate -of ISCE mydem2.tif mydem.dem
+sudo env "PATH=$PATH" fixImageXml.py -i mydem.dem -f
+
+# next check if the orbit restituted files or precise orbit files are present
+# recently the location of orbit files have been moved to another location
+# https://s1qc.asf.alaska.edu/
+
+####################stackSentinel.py#############################################
 # example for the case of Haiti ascending track 04  
+cd ..
+sudo mkdir stack
+cd stack
+
+sudo env "PATH=$PATH" stackSentinel.py -s /media/12TB-1/data/S1/Haiti/Rishabh/AT4/ -d /media/12TB-2/Projects/Haiti/Rishabh/DEM/demLat_N17_N21_Lon_W075_W069_wgs84.dem -a /media/12TB-2/Projects/Haiti/Rishabh/AUX/ -o /media/12TB-2/Projects/Haiti/Rishabh/AUX_POEORB/ -c 3 -b ’17.78 20.17 -74.68 -71.79’ -m 20170215
+
