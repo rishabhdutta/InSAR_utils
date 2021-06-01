@@ -7,3 +7,11 @@
 ###  Univ. : Missouri University of Science and Technology    ###   
 #################################################################
 
+#stackSentinel.py generates all configuration and run files required to be executed on a stack of Sentinel-1 TOPS data. When stackSentinel.py is executed for a given workflow (-W option) a configs and run_files folder is generated. No processing is performed at this stage. Within the run_files folder different run_#_description files are contained which are to be executed as shell scripts in the run number order. Each of these run scripts call specific configure files contained in the “configs” folder which call ISCE in a modular fashion. The configure and run files will change depending on the selected workflow. To make run_# files executable, change the file permission accordingly (e.g., chmod +x run_01_unpack_slc).
+
+# all the scripts are run as a sudoer for permissions to right on the external drive
+
+sudo env "PATH=$PATH" stackSentinel.py -H     #To see workflow examples,
+sudo env "PATH=$PATH" stackSentinel.py -h     #To get an overview of all the configurable parameters
+
+# example for the case of Haiti ascending track 04  
