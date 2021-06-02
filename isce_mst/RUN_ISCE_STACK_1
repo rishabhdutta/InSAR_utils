@@ -57,6 +57,7 @@ sudo env "PATH=$PATH" fixImageXml.py -i mydem.dem -f
 # calibration files AUX_CAL_* are placed in folder /media/12TB-2/Projects/Haiti/Rishabh/AUX/
 # if the folder is empty, get the files from https://s1qc.asf.alaska.edu/aux_cal/
 # get index.html from the page sources (right click and choose Inspect)
+cd /media/12TB-2/Projects/Haiti/Rishabh/AUX/
 sudo env "PATH=$PATH" awk '{print "wget --user=rishabhgeo --password='password' https://s1qc.asf.alaska.edu/aux_cal/"substr($2,7,50)}' index.html  | sudo dd of=getallfiles.txt
 sudo chmod +x getallfiles.txt
 sudo ./getallfiles.txt
@@ -64,6 +65,7 @@ sudo ./getallfiles.txt
 # precise orbits files AUX_POEORB_* are placed in folder /media/12TB-2/Projects/Haiti/Rishabh/AUX_POEORB/
 # if the folder is empty, get the files from https://s1qc.asf.alaska.edu/aux_poeorb/
 # get index.html from the page sources (right click and choose Inspect)
+cd /media/12TB-2/Projects/Haiti/Rishabh/AUX_POEORB/
 sudo env "PATH=$PATH" awk '{print "wget --user=rishabhgeo --password='password' https://s1qc.asf.alaska.edu/aux_poeorb/"substr($2,7,77)}' index.html  | sudo dd of=getallfiles.txt
 sudo chmod +x getallfiles.txt
 sudo ./getallfiles.txt
@@ -71,7 +73,7 @@ sudo ./getallfiles.txt
 
 ####################stackSentinel.py#############################################
 # example for the case of Haiti ascending track 04  
-cd ..
+cd "path to processing"
 sudo mkdir stack
 cd stack
 

@@ -1,0 +1,46 @@
+#!/bin/bash
+
+#################################################################
+###  Copy Right (c): 2021, Rishabh Dutta                      ###  
+###  Author: Rishabh Dutta                                    ###               
+###  Email : rd873@mst.edu                                    ###
+###  Univ. : Missouri University of Science and Technology    ###   
+#################################################################
+
+# Run this script to build ISCE in your server running Linux OS
+
+# I would suggest using Anaconda, because life is easier with it and to avoid
+# potential conflicts due to the software versions
+# you might be asked to provide path where it is to be installed 
+
+bash Anaconda_installer
+
+# you might have to type the follwoing once
+bash
+
+# create an environment and name it isce2
+conda create -n isce2 python=3.8
+
+# then activate the isce2 environment
+conda activate isce2
+
+# install the already built isce2 from conda-forge
+conda install -c conda-forge isce2
+
+# then add these lines to your bash configuration file .bashrc
+ISCE_HOME=path_to_anaconda3/envs/isce2/lib/python3.8/site-packages/isce
+ISCE_STACK=path_to_anaconda3/envs/isce2/share/isce2
+PATH=$ISCE_HOME/bin:$ISCE_HOME/applications:$ISCE_STACK/topsStack:$PATH
+PYTHONPATH=path_to_anaconda3/envs/isce2/lib/python3.8/site-packages:$PYTHONPATH
+
+# change the path_to_anaconda3 to what your actual path to anaconda3 
+
+# run bash
+bash
+
+# run topsApp.py to check it runs good
+topsApp.y -h
+stackSentinel.py -h
+
+
+
