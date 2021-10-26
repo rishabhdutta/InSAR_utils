@@ -26,7 +26,7 @@ parser.add_argument('-c', '--colormap', type=str, metavar='', required=False, he
 parser.add_argument('-a', '--aspect', type=str, metavar='', required=False, help='Input aspect')
 parser.add_argument('-dmin', '--datamin', type=float, metavar='', required=False, help='Input minimum data value')
 parser.add_argument('-dmax', '--datamax', type=float, metavar='', required=False, help='Input maximum data value')
-parser.add_argument('-bg', '--background', type=str, metavar='', required=False, help='background needed?')
+parser.add_argument('-bgnd', '--background', type=str, metavar='', required=False, help='background needed?')
 
 
 args = parser.parse_args()
