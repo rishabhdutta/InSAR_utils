@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#################################################################
+###  Copy Right (c): 2022, Rishabh Dutta                      ###
+###  Author: Rishabh Dutta                                    ###
+###  Email : rd873@mst.edu                                    ###
+###  Univ. : Missouri University of Science and Technology    ###
+#################################################################
+
+# Steps to install Fringe - estimate deformation time-series by 
+# exploiting interferometric covariance matrix for distributed scatterers
+# (DS) and the phase history of pixels that exhibit very little temporal
+# variation (PS)
+
+
