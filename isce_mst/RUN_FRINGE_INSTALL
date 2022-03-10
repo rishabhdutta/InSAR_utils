@@ -12,72 +12,31 @@
 # (DS) and the phase history of pixels that exhibit very little temporal
 # variation (PS)
 
-# installing on Ubuntu OS without sudo access. Edit the paths for use. 
-
-# Install pre-requisites
-
-#1. cmake
-cd ~/softwares
-wget https://github.com/Kitware/CMake/releases/download/v3.22.3/cmake-3.22.3.tar.gz
-# use the latest version - check the website for updated link
-# should be version 3.14+
-
-tar -xvzf cmake-**.tar.gz
-rm cmake-**.tar.gz
-cd cmake-**
-mkdir cmake-build && cd cmake-build
-
-./../bootstrap --prefix=/home/rd873/softwares/bin
-make
-make install
+# installing on Ubuntu OS without sudo access. 
 
 # create a conda environment for running fringe
 conda create -n fringe python=3.8
 conda activate fringe
 
-# install gdal
+# install prerequisites
+conda install cmake
+conda install cython
 conda install gdal
+conda install libgdal
+conda install armadillo
+conda install lapack
+conda install blas
+conda install -c conda-forge isce2
+conda install gxx_linux-64
 # libgdal is installed when installing gdal
 
-# install cython
-conda install cython
-
-# install isce
-conda install -c conda-forge isce2
-
-# install LAPACK, Boost, BLAS and Armadillo
-wget https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v3.10.0.tar.gz
-tar -xvzf v3.10.0.tar.gz
-rm v3.10.0.tar.gz
-cd lapack-3.**
-
-mkdir build
-cd build
-/home/rd873/softwares/bin/bin/cmake -DCMAKE_INSTALL_LIBDIR=$HOME/.local/lapack ..
-/home/rd873/softwares/bin/bin/cmake --build .
-/home/rd873/softwares/bin/bin/cmake --build . --target install
-
-# blas
-cd ~/softwares
-wget http://www.netlib.org/blas/blas-3.10.0.tgz
-tar -xvzf blas-3.10.0.tgz
-rm blas-3.10.0.tgz
-
-cd BLAS-3.10.0
-make
-mv blas_LINUX.a libblas.a
-mv libblas.a ~/softwares/lib/.
-# add ~/softwares/lib/. to path in .bashrc
-
-#armadillo
-cd ~/softwares
-wget http://sourceforge.net/projects/arma/files/armadillo-10.8.2.tar.xz
-tar -xvf armadillo-10.**
-rm armadillo-10.**
-cd armadillo-10.**
-./configure --prefix=/home/rd873/softwares/bin
-/home/rd873/softwares/bin/bin/cmake . -DCMAKE_INSTALL_PREFIX:PATH=/home/rd873/softwares/lib
-/home/rd873/softwares/bin/bin/cmake --build . --target install
+# ** IMPORTANT ** set environment variables for isce2 before installing fringe
+# Fringe install won't work otherwise - has to be corrected in fringe installation guide
+ISCE_HOME=/home/rd873/anaconda3/envs/isce2/lib/python3.7/site-packages/isce
+ISCE_STACK=/home/rd873/anaconda3/envs/isce2/share/isce2
+PATH=$ISCE_HOME/bin:$ISCE_HOME/applications:$ISCE_STACK/topsStack:$ISCE_STACK/stripmapStack:$ISCE_STACK/prepStackToStaMPS/bin:$PATH
+PYTHONPATH=/home/rd873/anaconda3/envs/isce2/lib/python3.7/site-packages:$PYTHONPATH
+# edit the lines according to your path
 
 # now install fringe
 # follow steps in https://github.com/isce-framework/fringe/blob/main/docs/install.md
@@ -90,8 +49,17 @@ mkdir install build src
 cd src
 git clone https://github.com/isce-framework/fringe.git
 
-cd build
-CXX=${CXX} /home/rd873/softwares/bin/bin/cmake -DCMAKE_INSTALL_PREFIX=../install ../src/fringe
+cd ../build
+CXX=${CXX} cmake -DCMAKE_INSTALL_PREFIX=../install ../src/fringe
+make all
+make install
+
+# now add environment variables for fringe
+export PATH=$PATH:/home/rd873/softwares/fringe/install/bin
+export PYTHONPATH=$PYTHONPATH:/home/rd873/softwares/fringe/install/python
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/rd873/softwares/fringe/install/lib
+# edit the lines according to your path
+
 
 
 
