@@ -10,7 +10,7 @@ import os
 import argparse
 
 parser = argparse.ArgumentParser(description='goes to SLC folder in merged and creates .slc.full files from .slc.full.vrt files')
-parser.add_argument('-p', '--path', type=float, metavar='', required=True, help='enter path to merged folder')
+parser.add_argument('-p', '--path', type=str, metavar='', required=True, help='enter path to merged folder')
 
 args = parser.parse_args()
 
