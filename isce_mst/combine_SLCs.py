@@ -38,6 +38,6 @@ for i in CoList:
         Counter += 1
 # Counter is the number of lines in the file 
 
-list_of_lines = a_file.readlines()
+list_of_lines = file.readlines()
 print(list_of_lines[1])
 
