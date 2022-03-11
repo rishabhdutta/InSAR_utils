@@ -15,9 +15,9 @@ parser.add_argument('-p', '--path', type=str, metavar='', required=True, help='e
 args = parser.parse_args()
 
 merged_dir = str(args.path)
-sys_comm1 = 'cd ' + merged_dir
+sys_comm1 = 'cd ' + merged_dir + ' && mkdir trash'
 os.system(sys_comm1)
-os.system('mkdir trash')
+
 
 
 
