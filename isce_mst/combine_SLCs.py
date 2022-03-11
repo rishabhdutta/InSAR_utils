@@ -38,6 +38,6 @@ for i in CoList:
         Counter += 1
 # Counter is the number of lines in the file 
 
-list_of_lines = file.readlines()
-print(list_of_lines)
+print(file.readlines(1))
+
 
