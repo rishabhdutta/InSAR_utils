@@ -50,7 +50,7 @@ for line in Lines:
     #print(sys_comm3)
     sys_comm4 = 'cd ' + SLC_dir + '/' + line.strip() + '/ && '
     #print(sys_comm4)
-    sys_comm5 = sys_comm4 + sys_comm5
+    sys_comm5 = sys_comm4 + sys_comm3
     print(sys_comm5)
 file.close()
 
