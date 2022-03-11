@@ -41,6 +41,7 @@ for i in CoList:
 lines = file.readlines()
 for index, line in enumerate(lines):
     print("Line {}: {}".format(index, line.strip()))
+
     
 file.close()
 
