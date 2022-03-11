@@ -38,6 +38,6 @@ for i in CoList:
         Counter += 1
 # Counter is the number of lines in the file 
 
-print(file.readlines(1))
+print(file.readlines(2))
 
 
