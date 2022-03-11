@@ -46,7 +46,9 @@ count = 0
 for line in Lines:
     count += 1
     print("Moving SLC {}".format(line.strip()))
-    print(line.strip())
+    sys_comm3 = 'gdal_translate -of ENVI '+ line.strip() + '.slc.full.vrt ' + line.strip() + '.slc.full'
+    print(sys_comm3)
+
 file.close()
 
 
