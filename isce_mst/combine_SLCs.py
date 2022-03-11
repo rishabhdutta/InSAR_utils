@@ -37,11 +37,15 @@ for i in CoList:
     if i:
         Counter += 1
 # Counter is the number of lines in the file 
-
-lines = file.readlines()
-for index, line in enumerate(lines):
-    print("Line {}: {}".format(index, line.strip()))
-
-    
 file.close()
+
+file = open(filename,"r")
+Lines = file.readlines()
+count = 0
+# Strips the newline character
+for line in Lines:
+    count += 1
+    print("Line{}: {}".format(count, line.strip()))
+file.close()
+
 
