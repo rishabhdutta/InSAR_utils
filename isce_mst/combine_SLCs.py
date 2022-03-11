@@ -39,5 +39,5 @@ for i in CoList:
 # Counter is the number of lines in the file 
 
 list_of_lines = file.readlines()
-print(list_of_lines[0])
+print(list_of_lines)
 
