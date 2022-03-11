@@ -38,6 +38,9 @@ for i in CoList:
         Counter += 1
 # Counter is the number of lines in the file 
 
-print(file.readlines(33))
-
+lines = file.readlines()
+for index, line in enumerate(lines):
+    print("Line {}: {}".format(index, line.strip()))
+    
+file.close()
 
