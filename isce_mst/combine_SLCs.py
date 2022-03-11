@@ -20,8 +20,24 @@ os.system(sys_comm1)
 
 trash_dir = merged_dir + '/trash'
 SLC_dir = merged_dir + '/SLC'
+filename = trash_dir + '/dates.txt'
 
 # get list of dates in SLC and put that in trash folder
-sys_comm2 = 'ls ' + SLC_dir + ' > ' + trash_dir + '/dates.txt'
+sys_comm2 = 'ls ' + SLC_dir + ' > ' + filename
 os.system(sys_comm2)
+
+# read the file dates.txt
+file = open(filename,"r")
+
+Counter = 0
+# Reading from file
+Content = file.read()
+CoList = Content.split("\n")
+for i in CoList:
+    if i:
+        Counter += 1
+# Counter is the number of lines in the file 
+
+list_of_lines = a_file.readlines()
+print(list_of_lines[1])
 
