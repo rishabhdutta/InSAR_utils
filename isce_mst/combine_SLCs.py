@@ -46,6 +46,7 @@ count = 0
 for line in Lines:
     count += 1
     print("Moving SLC {}".format(line.strip()))
+    print(line.strip())
 file.close()
 
 
