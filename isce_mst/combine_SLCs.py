@@ -18,6 +18,10 @@ merged_dir = str(args.path)
 sys_comm1 = 'cd ' + merged_dir + ' && mkdir trash'
 os.system(sys_comm1)
 
+trash_dir = merged_dir + '/trash'
+SLC_dir = merged_dir + '/SLC'
 
-
+# get list of dates in SLC and put that in trash folder
+sys_comm2 = 'ls ' + SLC_dir + ' > ' + trash_dir + '/dates.txt'
+os.system(sys_comm2)
 
