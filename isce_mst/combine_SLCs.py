@@ -52,6 +52,7 @@ for line in Lines:
     #print(sys_comm4)
     sys_comm5 = sys_comm4 + sys_comm3
     print(sys_comm5)
+    os.system(sys_comm5)
 file.close()
 
 
