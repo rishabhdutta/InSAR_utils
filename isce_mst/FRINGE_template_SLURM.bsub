@@ -1,0 +1,50 @@
+#!/bin/bash
+#SBATCH --job-name=fringeDT69
+#SBATCH --ntasks=64
+#SBATCH --time=1-02:00:00 
+#SBATCH --mail-type=begin,end,fail,requeue
+#SBATCH --mail-user=rd873@mst.edu 
+#SBATCH --export=all 
+#SBATCH --out=Foundry-%j.out 
+#SBATCH --mem-per-cpu=100000
+##SBATCH -p general
+
+# %j will substitute to the job's id
+#now run your executables just like you would in a shell script, Slurm will set the working directory as the directory the job was submitted from. 
+#e.g. if you submitted from /home/blspcy/softwaretesting your job would run in that directory.
+ 
+#(executables) (options) (parameters)
+echo "this is a general submission script"
+echo "I've submitted my first batch job successfully"
+
+python combine_SLCs.py -p /mnt/stor/geob/jlmd9g/Rishabh/Haiti/SenAT106/stack/merged
+
+tops2vrt.py -i ../merged/ -s coreg_stack -g geometry -c slcs -B 19.701 19.801 -72.3 -72.1
+
+nmap.py -i coreg_stack/slcs_base.vrt -o KS2/nmap -c KS2/count -x 11 -y 5
+
+sequential.py -i ../merged/SLC -s 15 -o Sequential -w KS2/nmap -b coreg_stack/slcs_base.vrt -x 11 -y 5
+
+adjustMiniStacks.py -s slcs/ -m Sequential/miniStacks/ -d Sequential/Datum_connection/ -M 15 -o adjusted_wrapped_DS
+
+ampdispersion.py -i coreg_stack/slcs_base.vrt -o ampDispersion/ampdispersion -m ampDispersion/mean
+
+imageMath.py -e="a<0.4" --a=ampDispersion/ampdispersion  -o ampDispersion/ps_pixels -t byte
+
+integratePS.py -s coreg_stack/slcs_base.vrt -d adjusted_wrapped_DS/ -t Sequential/Datum_connection/EVD/tcorr.bin -p ampDispersion/ps_pixels -o PS_DS --unwrap_method snaphu
+
+unwrapStack.py -s slcs -m Sequential/miniStacks/ -d Sequential/Datum_connection/ -M 15 -u 'unwrap_fringe.py' --unw_method snaphu
+
+parallel -j+0 < run_unwrap_ps_ds.sh
+
+echo "finished job"
+
+
+
+
+
+
+
+
+
+
