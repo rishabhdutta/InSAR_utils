@@ -43,6 +43,27 @@ unwrapStack.py -s slcs -m Sequential/miniStacks/ -d Sequential/Datum_connection/
 
 parallel -j+0 < run_unwrap_ps_ds.sh
 
+cd ../merged/geom_reference/
+gdal_translate -of ENVI lat.rdr.full.vrt lat.rdr.full
+gdal_translate -of ENVI lon.rdr.full.vrt lon.rdr.full
+gdal_translate -of ENVI hgt.rdr.full.vrt hgt.rdr.full
+gdal_translate -of ENVI los.rdr.full.vrt los.rdr.full
+gdal_translate -of ENVI incLocal.rdr.full.vrt incLocal.rdr.full
+gdal_translate -of ENVI shadowMask.rdr.full.vrt shadowMask.rdr.full
+gdal2isce_xml.py -i los.rdr.full
+gdal2isce_xml.py -i lon.rdr.full
+gdal2isce_xml.py -i lat.rdr.full
+gdal2isce_xml.py -i hgt.rdr.full
+gdal2isce_xml.py -i incLocal.rdr.full
+gdal2isce_xml.py -i incLocal.rdr.full
+
+cd ../../fringe
+
+# import the fringe outputs into mintpy for further corrections
+prep_fringe.py -u './PS_DS/unwrap/*.unw' -c ./PS_DS/tcorr_ds_ps.bin -g ./geometry -m '../reference/IW*.xml' -b ../baselines -o ./mintpy
+
+
+
 echo "finished job"
 
 
