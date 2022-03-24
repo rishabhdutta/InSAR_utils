@@ -62,7 +62,7 @@ cd ../../fringe
 # import the fringe outputs into mintpy for further corrections
 prep_fringe.py -u './PS_DS/unwrap/*.unw' -c ./PS_DS/tcorr_ds_ps.bin -g ./geometry -m '../reference/IW*.xml' -b ../baselines -o ./mintpy
 
-
+# change the directory to mintpy and run the remaining scripts. check for example scripts using prep_fringe.py -h 
 
 echo "finished job"
 
