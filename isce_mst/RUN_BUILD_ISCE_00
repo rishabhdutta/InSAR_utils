@@ -39,8 +39,12 @@ PYTHONPATH=path_to_anaconda3/envs/isce2/lib/python3.8/site-packages:$PYTHONPATH
 bash
 
 # run topsApp.py to check it runs good
-topsApp.y -h
+topsApp.py -h
 stackSentinel.py -h
+
+# Alternatively if you want to install ISCE2 with cuda
+# check https://github.com/yunjunz/conda_envs/blob/main/isce2/README.md
+
 
 
 
