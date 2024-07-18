@@ -54,7 +54,10 @@ cd ../build
 CXX=${CXX} cmake -DCMAKE_INSTALL_PREFIX=../install ../src/fringe
 # with python 3.7 or python 3.8 or in cases when cmake cannot find the correct Python paths
 # run with 
-# CXX=${CXX} cmake -DPython_EXECUTABLE=~/anaconda3/envs/isce2/bin/python -DPython_INCLUDE_DIR=~/anaconda3/envs/isce2/include/python3.7m -DPython_LIBRARY=~/anaconda3/envs/isce2/lib/libpython3.7m.so -DCMAKE_INSTALL_PREFIX=../install ../src/fringe
+# CXX=${CXX} cmake -DPython_EXECUTABLE=~/anaconda3/envs/isce2/bin/python \
+#	-DPython_INCLUDE_DIR=~/anaconda3/envs/isce2/include/python3.7m \
+#	-DPython_LIBRARY=~/anaconda3/envs/isce2/lib/libpython3.7m.so \
+#	-DCMAKE_INSTALL_PREFIX=../install ../src/fringe
 # edit the paths according to your conda env python installation
 make all
 make install
