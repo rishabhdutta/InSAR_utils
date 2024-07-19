@@ -28,7 +28,7 @@ conda install lapack
 conda install blas
 conda install -c conda-forge isce2
 conda install gxx_linux-64
-conda install -y "pybind11<=2.11"
+conda install pybind11=2.9
 # libgdal is installed when installing gdal
 
 # ** IMPORTANT ** set environment variables for isce2 before installing fringe
