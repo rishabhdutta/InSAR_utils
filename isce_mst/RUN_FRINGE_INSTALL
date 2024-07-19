@@ -28,7 +28,7 @@ conda install lapack
 conda install blas
 conda install -c conda-forge isce2
 conda install gxx_linux-64
-conda install pybind11
+conda install -y "pybind11<=2.11"
 # libgdal is installed when installing gdal
 
 # ** IMPORTANT ** set environment variables for isce2 before installing fringe
@@ -59,7 +59,11 @@ CXX=${CXX} cmake -DCMAKE_INSTALL_PREFIX=../install ../src/fringe
 #	-DPython_LIBRARY=~/anaconda3/envs/isce2/lib/libpython3.7m.so \
 #	-DCMAKE_INSTALL_PREFIX=../install ../src/fringe
 # edit the paths according to your conda env python installation
+
 make all
+# if cannot find the header crypt.h then run
+# conda install -c conda-forge libxcrypt
+
 make install
 
 # now add environment variables for fringe
